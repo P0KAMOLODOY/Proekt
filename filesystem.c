@@ -56,3 +56,49 @@ int fs_delete_file(const char* filename) {
         }
     }
     return found ? 0 : -1;  
+/**
+ * Создает новый файл в виртуальной файловой системе
+ * @param fs_content Указатель на содержимое всей ФС
+ * @param filename Имя создаваемого файла
+ * @param content Содержимое файла
+ * @return Указатель на обновленное содержимое ФС
+ */
+char* fs_create_file(char* fs_content, const char* filename, const char* content) {
+    // Вычисляем новую длину
+    size_t new_len = strlen(fs_content) + strlen(filename) + strlen(content) + 4;
+    
+    // Выделяем память
+    char* new_fs = malloc(new_len);
+    sprintf(new_fs, "%s%s\n%s\n/\n", fs_content, filename, content);
+    
+    return new_fs;
+}
+/**
+ * Изменяет содержимое существующего файла
+ * @param fs_content Указатель на содержимое всей ФС
+ * @param filename Имя изменяемого файла
+ * @param new_content Новое содержимое файла
+ * @return Указатель на обновленное содержимое ФС
+ */
+char* fs_modify_file(char* fs_content, const char* filename, const char* new_content) {
+    char* file_start = strstr(fs_content, filename);
+    if (!file_start) return NULL;
+
+    // Находим начало и конец старого содержимого
+    char* content_start = file_start + strlen(filename) + 1;
+    char* content_end = strstr(content_start, "/\n");
+    if (!content_end) content_end = fs_content + strlen(fs_content);
+
+    // Вычисляем новые размеры
+    size_t prefix_len = content_start - fs_content;
+    size_t suffix_len = strlen(content_end);
+    size_t new_len = prefix_len + strlen(new_content) + suffix_len + 1;
+
+    // Собираем новое содержимое
+    char* new_fs = malloc(new_len);
+    memcpy(new_fs, fs_content, prefix_len);
+    strcpy(new_fs + prefix_len, new_content);
+    strcpy(new_fs + prefix_len + strlen(new_content), content_end);
+    
+    return new_fs;
+}
