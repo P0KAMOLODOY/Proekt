@@ -42,3 +42,29 @@ clean:
  rm -f $(TARGET)
 
 .PHONY: all clean
+## 2. Документация 
+
+### Новые функции файловой системы
+
+#### `fs_create_file`
+char* fs_create_file(char* fs_content, const char* filename, const char* content);
+Назначение: Добавляет новый файл в конец файловой системы  
+Параметры:
+- fs_content - текущее содержимое всей ФС (`char*`)
+- filename - имя создаваемого файла (`const char*`)
+- content - содержимое файла (`const char*`)  
+Возвращает:
+- Указатель на новое содержимое ФС (`char*`)
+- Требуется ручное освобождение памяти
+
+#### `fs_modify_file`
+char* fs_modify_file(char* fs_content, const char* filename, const char* new_content);
+Назначение: Заменяет содержимое существующего файла  
+Параметры:
+- fs_content - текущее содержимое всей ФС (`char*`)
+- filename - имя изменяемого файла (`const char*`)
+- new_content - новое содержимое (`const char*`)  
+Возвращает:
+- Указатель на обновленное содержимое ФС (`char*`)
+- NULL если файл не найден
+- Требуется ручное освобождение памяти
