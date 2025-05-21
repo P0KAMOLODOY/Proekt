@@ -27,21 +27,7 @@
 Возвращает:  
 - 0 при успешном удалении.  
 - -1, если файл не найден.
-### MakeFile
-CC = gcc
-CFLAGS = -Wall -Wextra -Iinclude
-TARGET = fs_program
-SRC = src/filesystem.c src/main.c
 
-all: $(TARGET)
-
-$(TARGET): $(SRC)
- $(CC) $(CFLAGS) -o $@ $^
-
-clean:
- rm -f $(TARGET)
-
-.PHONY: all clean
 ## 2. Документация 
 
 ### Новые функции файловой системы
